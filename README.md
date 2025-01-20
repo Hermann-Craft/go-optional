@@ -125,16 +125,21 @@ opt.IfPresentOrElse(
 
 #### Map to a New Value
 ```go
-mapped := opt.Map(func(val int) string {
-    return fmt.Sprintf("Value is %d", val)
+opt := Of(42)
+mapped := Map(opt, func(val int) string {
+    return fmt.Sprintf("Value: %d", val)
 })
-fmt.Println(mapped) // Output: Optional[Value is 42]
+fmt.Println(mapped) // Output: Optional[Value: 42]
 ```
 
 #### FlatMap to Another Optional
 ```go
-flatMapped := opt.FlatMap(func(val int) optional.Optional[string] {
-    return optional.Of(fmt.Sprintf("Value is %d", val))
+opt := Of(42)
+flatMapped := FlatMap(opt, func(val int) Optional[string] {
+    if val > 10 {
+        return Of(fmt.Sprintf("Value is %d", val))
+    }
+    return Empty[string]()
 })
 fmt.Println(flatMapped) // Output: Optional[Value is 42]
 ```
